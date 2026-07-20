@@ -1,283 +1,214 @@
-import { useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Shield, User, KeyRound, X } from "lucide-react";
-import { listTrialAccounts } from "@/lib/trialAccounts";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  Boxes,
+  CircleDashed,
+  Dice5,
+  FileCode2,
+  LayoutDashboard,
+  LockKeyhole,
+  MonitorCheck,
+  ShieldCheck,
+  Sparkles,
+  TimerReset,
+  type LucideIcon,
+} from "lucide-react";
+import { PlatformLogo } from "@/components/PlatformLogo";
 
 export const Route = createFileRoute("/")({
-  component: PlatformLoginPage,
+  component: InternalLaunchPage,
 });
 
-// 预设的管理员账户（不显示给用户）
-const ADMIN_ACCOUNTS = [
-  { email: "liugang@tsa.cn", password: "admin@" },
+type LaunchApp = {
+  title: string;
+  subtitle: string;
+  description: string;
+  status: string;
+  href?: string;
+  disabled?: boolean;
+  icon: LucideIcon;
+  accent: string;
+  meta: string[];
+};
+
+const launchApps: LaunchApp[] = [
+  {
+    title: "Demo 演示",
+    subtitle: "可信时间戳产品演示中心",
+    description:
+      "进入管理员或试用账号登录流程，体验 AI 剧本创作、协议见证、行为轨迹回溯等完整演示模块。",
+    status: "已上线",
+    href: "/demo-login",
+    icon: MonitorCheck,
+    accent: "from-blue-500 to-cyan-400",
+    meta: ["账号登录", "演示管理", "自动部署"],
+  },
+  {
+    title: "内部骰子游戏",
+    subtitle: "源码接入中",
+    description:
+      "预留给你上传的 ZIP 游戏源码。接入后会作为独立内部应用展示，并保持统一入口体验。",
+    status: "待接入",
+    disabled: true,
+    icon: Dice5,
+    accent: "from-amber-400 to-orange-500",
+    meta: ["ZIP 源码", "独立路由", "待发布"],
+  },
+  {
+    title: "其他内部应用",
+    subtitle: "应用目录扩展位",
+    description:
+      "后续可继续添加工具、小游戏、运营看板或客户演示项目，统一从这里进入。",
+    status: "待添加",
+    disabled: true,
+    icon: Boxes,
+    accent: "from-emerald-400 to-teal-500",
+    meta: ["可扩展", "分类管理", "统一入口"],
+  },
 ];
 
-function PlatformLoginPage() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loginType, setLoginType] = useState<"admin" | "trial">("admin");
-  const [showForgotModal, setShowForgotModal] = useState(false);
-  const [forgotEmail, setForgotEmail] = useState("");
-  const [forgotError, setForgotError] = useState("");
-  const [forgotSuccess, setForgotSuccess] = useState(false);
+const highlights = [
+  { label: "Cloudflare Pages", value: "在线部署", icon: LayoutDashboard },
+  { label: "GitHub", value: "源码托管", icon: FileCode2 },
+  { label: "HTTPS", value: "安全访问", icon: LockKeyhole },
+  { label: "Demo Hub", value: "统一入口", icon: ShieldCheck },
+];
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    if (loginType === "admin") {
-      // 管理员登录
-      const admin = ADMIN_ACCOUNTS.find(
-        (a) => a.email === email && a.password === password
-      );
-      if (admin) {
-        localStorage.setItem("platformEmail", email);
-        localStorage.setItem("platformUserType", "admin");
-        localStorage.removeItem("platformTrialExpiry"); // 清除试用账户的过期时间
-        navigate({ to: "/platform" });
-      } else {
-        setError("管理员账号或密码错误");
-      }
-    } else {
-      // 试用账户登录 - 优先使用 Supabase，未配置时使用本地 Demo 数据
-      handleTrialLogin();
-    }
-  };
-
-  const handleTrialLogin = async () => {
-    try {
-      const accounts = await listTrialAccounts();
-
-      if (!accounts || accounts.length === 0) {
-        setError("暂无可用试用账户，请联系管理员创建");
-        return;
-      }
-
-      const account = accounts.find(
-        (a: any) => a.email === email && a.password === password
-      );
-
-      if (!account) {
-        setError("试用账号或密码错误");
-        return;
-      }
-
-      // 检查是否被停用
-      if (account.disabled) {
-        setError("该账户已被停用，请联系管理员");
-        return;
-      }
-
-      // 检查是否过期
-      if (new Date(account.expiry) < new Date()) {
-        setError("试用账户已过期，请联系管理员");
-        return;
-      }
-
-      localStorage.setItem("platformEmail", email);
-      localStorage.setItem("platformUserType", "trial");
-      localStorage.setItem("platformTrialExpiry", account.expiry);
-      navigate({ to: "/platform" });
-    } catch (err) {
-      console.error("登录异常:", err);
-      setError("登录时发生错误，请稍后重试");
-    }
-  };
-
-  const handleForgotPassword = () => {
-    setForgotError("");
-    setForgotSuccess(false);
-
-    // 验证邮箱后缀
-    if (!forgotEmail.endsWith("@tsa.cn")) {
-      setForgotError("请使用 @tsa.cn 后缀的企业邮箱");
-      return;
-    }
-
-    // 模拟发送邮件（实际项目中应调用 Edge Function）
-    setTimeout(() => {
-      setForgotSuccess(true);
-      setForgotEmail("");
-    }, 1000);
-  };
-
+function InternalLaunchPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <img
-            src="/assets/tsa-logo.svg"
-            alt="TSA Logo"
-            className="w-20 h-20 mx-auto rounded-full mb-4 bg-white p-1"
-          />
-          <h1 className="text-2xl font-bold text-white">演示平台登录</h1>
-          <p className="text-gray-400 mt-2">Demo Platform Login</p>
+    <main className="relative isolate min-h-screen overflow-hidden bg-[#08111f] text-white">
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(rgba(148,163,184,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.08)_1px,transparent_1px)] bg-[size:42px_42px]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(37,99,235,0.24),transparent_42%),linear-gradient(180deg,rgba(8,17,31,0)_0%,#08111f_72%)]" />
+
+      <section className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-10">
+        <header className="flex items-center justify-between border-b border-white/10 pb-5">
+          <div className="flex items-center gap-3">
+            <PlatformLogo size="sm" />
+            <div>
+              <p className="text-sm font-semibold tracking-wide text-white">TSA Internal Demo Hub</p>
+              <p className="text-xs text-slate-400">内部应用入口</p>
+            </div>
+          </div>
+          <div className="hidden items-center gap-2 rounded-lg border border-emerald-400/25 bg-emerald-400/10 px-3 py-2 text-xs text-emerald-200 sm:flex">
+            <CircleDashed className="h-3.5 w-3.5" />
+            tsa-demo.pages.dev
+          </div>
+        </header>
+
+        <div className="grid flex-1 items-center gap-10 py-10 lg:grid-cols-[0.92fr_1.08fr] lg:py-14">
+          <section className="max-w-2xl">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-lg border border-blue-300/20 bg-blue-300/10 px-3 py-2 text-sm text-blue-100">
+              <Sparkles className="h-4 w-4 text-cyan-200" />
+              内部演示与工具统一入口
+            </div>
+            <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+              选择要进入的内部应用
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">
+              当前页面用于承载多个内部项目。你可以先进入现有 Demo 演示，后续骰子游戏和更多应用会逐步接入到同一个入口。
+            </p>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {highlights.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
+                    className="rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_48px_rgba(2,6,23,0.28)] backdrop-blur"
+                  >
+                    <Icon className="mb-3 h-5 w-5 text-cyan-200" />
+                    <p className="text-sm font-medium text-white">{item.value}</p>
+                    <p className="mt-1 text-xs text-slate-400">{item.label}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="grid gap-4">
+            {launchApps.map((app, index) => (
+              <LaunchCard key={app.title} app={app} index={index} />
+            ))}
+          </section>
         </div>
 
-        {/* 登录表单 */}
-        <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
-          {/* 登录类型切换 */}
-          <div className="flex gap-2 mb-6">
-            <button
-              onClick={() => { setLoginType("admin"); setError(""); }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                loginType === "admin"
-                  ? "bg-primary text-white"
-                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-              }`}
-            >
-              <Shield className="inline h-4 w-4 mr-1" />
-              管理员
-            </button>
-            <button
-              onClick={() => { setLoginType("trial"); setError(""); }}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                loginType === "trial"
-                  ? "bg-primary text-white"
-                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
-              }`}
-            >
-              <User className="inline h-4 w-4 mr-1" />
-              试用账户
-            </button>
+        <footer className="flex flex-col gap-3 border-t border-white/10 pt-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <span>Demo applications are hosted by GitHub and Cloudflare Pages.</span>
+          <span className="flex items-center gap-2">
+            <TimerReset className="h-3.5 w-3.5" />
+            New commits will trigger automatic deployment.
+          </span>
+        </footer>
+      </section>
+    </main>
+  );
+}
+
+function LaunchCard({ app, index }: { app: LaunchApp; index: number }) {
+  const Icon = app.icon;
+  const content = (
+    <div
+      className={`group relative overflow-hidden rounded-lg border p-5 transition-all duration-300 ${
+        app.disabled
+          ? "border-white/10 bg-white/[0.035]"
+          : "border-blue-300/30 bg-white/[0.07] shadow-[0_24px_80px_rgba(37,99,235,0.18)] hover:-translate-y-0.5 hover:border-cyan-200/60"
+      }`}
+    >
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-4">
+          <div className={`rounded-lg bg-gradient-to-br ${app.accent} p-[1px]`}>
+            <div className="rounded-[7px] bg-[#0b1424] p-3">
+              <Icon className="h-6 w-6 text-white" />
+            </div>
           </div>
-
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-300 mb-1 block">
-                邮箱地址
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary/50 outline-none"
-                placeholder={loginType === "admin" ? "请输入管理员邮箱" : "请输入试用邮箱"}
-                required
-              />
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-xl font-semibold text-white">{app.title}</h2>
+              <span
+                className={`rounded-md px-2 py-1 text-xs ${
+                  app.disabled
+                    ? "bg-slate-500/15 text-slate-300"
+                    : "bg-emerald-400/15 text-emerald-200"
+                }`}
+              >
+                {app.status}
+              </span>
             </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-300 mb-1 block">
-                密码
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary/50 outline-none"
-                placeholder="请输入密码"
-                required
-              />
-            </div>
-
-            {error && (
-              <div className="text-red-400 text-sm bg-red-900/20 border border-red-800 rounded-lg p-3">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              className="w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-colors"
-            >
-              登录
-            </button>
-          </form>
-
-          {/* 提示信息 */}
-          <div className="mt-6 pt-4 border-t border-gray-700">
-            {loginType === "admin" ? (
-              <div className="text-xs text-gray-400 space-y-2">
-                <p className="text-purple-400">请使用企业邮箱登录</p>
-                <button
-                  onClick={() => setShowForgotModal(true)}
-                  className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors"
-                >
-                  <KeyRound className="h-3 w-3" />
-                  忘记管理员账号？
-                </button>
-              </div>
-            ) : (
-              <div className="text-xs text-gray-400">
-                <p>试用账户需由管理员创建</p>
-                <p className="mt-1">请联系管理员获取试用账号</p>
-              </div>
-            )}
+            <p className="mt-1 text-sm text-cyan-100/80">{app.subtitle}</p>
           </div>
         </div>
+        {!app.disabled && (
+          <ArrowRight className="mt-2 h-5 w-5 text-slate-400 transition group-hover:translate-x-1 group-hover:text-cyan-200" />
+        )}
       </div>
 
-      {/* 忘记密码弹窗 */}
-      {showForgotModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 w-full max-w-md relative">
-            <button
-              onClick={() => { setShowForgotModal(false); setForgotError(""); setForgotSuccess(false); }}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
-            >
-              <X className="h-5 w-5" />
-            </button>
+      <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">{app.description}</p>
 
-            <h3 className="text-lg font-semibold text-white mb-4">找回管理员账号</h3>
+      <div className="mt-5 flex flex-wrap gap-2">
+        {app.meta.map((item) => (
+          <span key={item} className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-slate-300">
+            {item}
+          </span>
+        ))}
+      </div>
 
-            {!forgotSuccess ? (
-              <>
-                <p className="text-sm text-gray-400 mb-4">
-                  请输入您的企业邮箱（@tsa.cn），我们将把管理员账号信息发送至该邮箱
-                </p>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-gray-300 mb-1 block">
-                      企业邮箱
-                    </label>
-                    <input
-                      type="email"
-                      value={forgotEmail}
-                      onChange={(e) => { setForgotEmail(e.target.value); setForgotError(""); }}
-                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary/50 outline-none"
-                      placeholder="yourname@tsa.cn"
-                    />
-                  </div>
-
-                  {forgotError && (
-                    <div className="text-red-400 text-sm bg-red-900/20 border border-red-800 rounded-lg p-3">
-                      {forgotError}
-                    </div>
-                  )}
-
-                  <button
-                    onClick={handleForgotPassword}
-                    className="w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-colors"
-                  >
-                    发送账号信息
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-4">
-                <div className="w-12 h-12 mx-auto rounded-full bg-green-600/20 flex items-center justify-center mb-4">
-                  <KeyRound className="h-6 w-6 text-green-400" />
-                </div>
-                <p className="text-white font-medium mb-2">邮件已发送</p>
-                <p className="text-sm text-gray-400">
-                  请查收您的邮箱，管理员账号信息已发送至该邮箱
-                </p>
-                <button
-                  onClick={() => setShowForgotModal(false)}
-                  className="mt-4 px-6 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
-                >
-                  关闭
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-white/10">
+        <div
+          className={`h-full rounded-full bg-gradient-to-r ${app.accent}`}
+          style={{ width: app.disabled ? "42%" : index === 0 ? "100%" : "64%" }}
+        />
+      </div>
     </div>
+  );
+
+  if (!app.href || app.disabled) {
+    return <div aria-disabled="true">{content}</div>;
+  }
+
+  return (
+    <a href={app.href} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
+      {content}
+    </a>
   );
 }

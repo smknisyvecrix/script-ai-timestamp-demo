@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PlatformRouteImport } from './routes/platform'
+import { Route as DemoLoginRouteImport } from './routes/demo-login'
 import { Route as CertificatesTestRouteImport } from './routes/certificates-test'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -38,6 +39,11 @@ import { Route as AppAgreementLoginRouteImport } from './routes/app/agreement/lo
 const PlatformRoute = PlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoLoginRoute = DemoLoginRouteImport.update({
+  id: '/demo-login',
+  path: '/demo-login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CertificatesTestRoute = CertificatesTestRouteImport.update({
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/certificates-test': typeof CertificatesTestRoute
+  '/demo-login': typeof DemoLoginRoute
   '/platform': typeof PlatformRouteWithChildren
   '/app/certificate': typeof AppCertificateRoute
   '/app/certificate-single': typeof AppCertificateSingleRoute
@@ -192,6 +199,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/certificates-test': typeof CertificatesTestRoute
+  '/demo-login': typeof DemoLoginRoute
   '/platform': typeof PlatformRouteWithChildren
   '/app/certificate': typeof AppCertificateRoute
   '/app/certificate-single': typeof AppCertificateSingleRoute
@@ -220,6 +228,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/certificates-test': typeof CertificatesTestRoute
+  '/demo-login': typeof DemoLoginRoute
   '/platform': typeof PlatformRouteWithChildren
   '/app/certificate': typeof AppCertificateRoute
   '/app/certificate-single': typeof AppCertificateSingleRoute
@@ -249,6 +258,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/certificates-test'
+    | '/demo-login'
     | '/platform'
     | '/app/certificate'
     | '/app/certificate-single'
@@ -276,6 +286,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/certificates-test'
+    | '/demo-login'
     | '/platform'
     | '/app/certificate'
     | '/app/certificate-single'
@@ -303,6 +314,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/certificates-test'
+    | '/demo-login'
     | '/platform'
     | '/app/certificate'
     | '/app/certificate-single'
@@ -331,6 +343,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   CertificatesTestRoute: typeof CertificatesTestRoute
+  DemoLoginRoute: typeof DemoLoginRoute
   PlatformRoute: typeof PlatformRouteWithChildren
   AppCertificateRoute: typeof AppCertificateRoute
   AppCertificateSingleRoute: typeof AppCertificateSingleRoute
@@ -361,6 +374,13 @@ declare module '@tanstack/react-router' {
       path: '/platform'
       fullPath: '/platform'
       preLoaderRoute: typeof PlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo-login': {
+      id: '/demo-login'
+      path: '/demo-login'
+      fullPath: '/demo-login'
+      preLoaderRoute: typeof DemoLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/certificates-test': {
@@ -550,6 +570,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   CertificatesTestRoute: CertificatesTestRoute,
+  DemoLoginRoute: DemoLoginRoute,
   PlatformRoute: PlatformRouteWithChildren,
   AppCertificateRoute: AppCertificateRoute,
   AppCertificateSingleRoute: AppCertificateSingleRoute,
