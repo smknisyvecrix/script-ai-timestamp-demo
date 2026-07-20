@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PlatformRouteImport } from './routes/platform'
+import { Route as DiceGameRouteImport } from './routes/dice-game'
 import { Route as DemoLoginRouteImport } from './routes/demo-login'
 import { Route as CertificatesTestRouteImport } from './routes/certificates-test'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -39,6 +40,11 @@ import { Route as AppAgreementLoginRouteImport } from './routes/app/agreement/lo
 const PlatformRoute = PlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiceGameRoute = DiceGameRouteImport.update({
+  id: '/dice-game',
+  path: '/dice-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoLoginRoute = DemoLoginRouteImport.update({
@@ -172,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/certificates-test': typeof CertificatesTestRoute
   '/demo-login': typeof DemoLoginRoute
+  '/dice-game': typeof DiceGameRoute
   '/platform': typeof PlatformRouteWithChildren
   '/app/certificate': typeof AppCertificateRoute
   '/app/certificate-single': typeof AppCertificateSingleRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/certificates-test': typeof CertificatesTestRoute
   '/demo-login': typeof DemoLoginRoute
+  '/dice-game': typeof DiceGameRoute
   '/platform': typeof PlatformRouteWithChildren
   '/app/certificate': typeof AppCertificateRoute
   '/app/certificate-single': typeof AppCertificateSingleRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/certificates-test': typeof CertificatesTestRoute
   '/demo-login': typeof DemoLoginRoute
+  '/dice-game': typeof DiceGameRoute
   '/platform': typeof PlatformRouteWithChildren
   '/app/certificate': typeof AppCertificateRoute
   '/app/certificate-single': typeof AppCertificateSingleRoute
@@ -259,6 +268,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/certificates-test'
     | '/demo-login'
+    | '/dice-game'
     | '/platform'
     | '/app/certificate'
     | '/app/certificate-single'
@@ -287,6 +297,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/certificates-test'
     | '/demo-login'
+    | '/dice-game'
     | '/platform'
     | '/app/certificate'
     | '/app/certificate-single'
@@ -315,6 +326,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/certificates-test'
     | '/demo-login'
+    | '/dice-game'
     | '/platform'
     | '/app/certificate'
     | '/app/certificate-single'
@@ -344,6 +356,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   CertificatesTestRoute: typeof CertificatesTestRoute
   DemoLoginRoute: typeof DemoLoginRoute
+  DiceGameRoute: typeof DiceGameRoute
   PlatformRoute: typeof PlatformRouteWithChildren
   AppCertificateRoute: typeof AppCertificateRoute
   AppCertificateSingleRoute: typeof AppCertificateSingleRoute
@@ -374,6 +387,13 @@ declare module '@tanstack/react-router' {
       path: '/platform'
       fullPath: '/platform'
       preLoaderRoute: typeof PlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dice-game': {
+      id: '/dice-game'
+      path: '/dice-game'
+      fullPath: '/dice-game'
+      preLoaderRoute: typeof DiceGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo-login': {
@@ -571,6 +591,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   CertificatesTestRoute: CertificatesTestRoute,
   DemoLoginRoute: DemoLoginRoute,
+  DiceGameRoute: DiceGameRoute,
   PlatformRoute: PlatformRouteWithChildren,
   AppCertificateRoute: AppCertificateRoute,
   AppCertificateSingleRoute: AppCertificateSingleRoute,

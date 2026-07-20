@@ -45,14 +45,14 @@ const launchApps: LaunchApp[] = [
   },
   {
     title: "内部骰子游戏",
-    subtitle: "源码接入中",
+    subtitle: "Lucky Guy 投骰子比赛",
     description:
-      "预留给你上传的 ZIP 游戏源码。接入后会作为独立内部应用展示，并保持统一入口体验。",
-    status: "待接入",
-    disabled: true,
+      "四名玩家轮流投骰子，支持奖励金额、并列加赛、淘汰机制、比赛记录和累计奖金统计。",
+    status: "已上线",
+    href: "/dice-game",
     icon: Dice5,
     accent: "from-amber-400 to-orange-500",
-    meta: ["ZIP 源码", "独立路由", "待发布"],
+    meta: ["本地存储", "比赛记录", "独立路由"],
   },
   {
     title: "其他内部应用",
