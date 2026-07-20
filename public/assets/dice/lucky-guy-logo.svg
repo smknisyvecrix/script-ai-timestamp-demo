@@ -1,0 +1,46 @@
+<svg width="520" height="150" viewBox="0 0 520 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="word" x1="58" y1="28" x2="454" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="0.26" stop-color="#A78BFA"/>
+      <stop offset="0.52" stop-color="#22D3EE"/>
+      <stop offset="0.78" stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#F8FAFC"/>
+    </linearGradient>
+    <linearGradient id="dice" x1="205" y1="32" x2="304" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDF4FF"/>
+      <stop offset="0.48" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-40%" width="160%" height="180%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.2 0 0 0 0 0.75 0 0 0 0 1 0 0 0 0.7 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="purpleGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.65 0 0 0 0 0.2 0 0 0 0 1 0 0 0 0.75 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <path d="M26 95L74 20H192L168 50H101L92 64H161L140 91H72L51 122H4L26 95Z" fill="#7C3AED" opacity="0.88" filter="url(#purpleGlow)"/>
+  <path d="M494 55L446 130H328L352 100H419L428 86H359L380 59H448L469 28H516L494 55Z" fill="#0EA5E9" opacity="0.82" filter="url(#glow)"/>
+  <text x="70" y="92" font-family="Impact, Arial Black, sans-serif" font-size="60" font-style="italic" letter-spacing="-2" fill="url(#word)" stroke="#020617" stroke-width="7" paint-order="stroke" filter="url(#glow)">LUCKY</text>
+  <text x="310" y="92" font-family="Impact, Arial Black, sans-serif" font-size="60" font-style="italic" letter-spacing="-2" fill="url(#word)" stroke="#020617" stroke-width="7" paint-order="stroke" filter="url(#glow)">GUY</text>
+  <g transform="translate(222 34) rotate(12 38 38)" filter="url(#glow)">
+    <rect x="4" y="4" width="76" height="76" rx="15" fill="url(#dice)" stroke="#E0F2FE" stroke-width="4"/>
+    <circle cx="25" cy="25" r="6" fill="#020617"/>
+    <circle cx="59" cy="25" r="6" fill="#020617"/>
+    <circle cx="42" cy="42" r="6" fill="#020617"/>
+    <circle cx="25" cy="59" r="6" fill="#020617"/>
+    <circle cx="59" cy="59" r="6" fill="#020617"/>
+  </g>
+  <path d="M72 110H192" stroke="#22D3EE" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <path d="M328 110H448" stroke="#A855F7" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+</svg>

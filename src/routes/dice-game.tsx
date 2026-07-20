@@ -79,11 +79,46 @@ const INITIAL_PLAYERS: Player[] = [
   { id: "4", name: "王小伟", gender: "male", dice1: 0, dice2: 0, total: 0, isEliminated: false, hasRolled: false, prizeMoney: 0 },
 ];
 
-const PLAYER_SKIN: Record<string, { gradient: string; ring: string; text: string; avatar: string }> = {
-  "1": { gradient: "from-orange-500 to-amber-300", ring: "border-orange-400/60", text: "text-orange-200", avatar: "龙" },
-  "2": { gradient: "from-pink-500 to-fuchsia-400", ring: "border-pink-400/60", text: "text-pink-200", avatar: "婵" },
-  "3": { gradient: "from-blue-500 to-cyan-300", ring: "border-cyan-300/60", text: "text-cyan-200", avatar: "鹏" },
-  "4": { gradient: "from-yellow-400 to-lime-300", ring: "border-yellow-300/60", text: "text-yellow-100", avatar: "伟" },
+const PLAYER_SKIN: Record<string, {
+  gradient: string;
+  ring: string;
+  text: string;
+  avatar: string;
+  avatarBg: string;
+  star: string;
+}> = {
+  "1": {
+    gradient: "from-orange-500 to-amber-300",
+    ring: "border-orange-400/60",
+    text: "text-orange-200",
+    avatar: "刁",
+    avatarBg: "bg-[radial-gradient(circle_at_35%_28%,#fff7ed_0%,#fb923c_27%,#7c2d12_64%,#111827_100%)]",
+    star: "text-orange-400",
+  },
+  "2": {
+    gradient: "from-fuchsia-500 to-pink-400",
+    ring: "border-fuchsia-400/70",
+    text: "text-pink-200",
+    avatar: "苏",
+    avatarBg: "bg-[radial-gradient(circle_at_34%_28%,#fdf4ff_0%,#e879f9_28%,#7e22ce_64%,#111827_100%)]",
+    star: "text-pink-400",
+  },
+  "3": {
+    gradient: "from-orange-500 to-yellow-300",
+    ring: "border-orange-300/70",
+    text: "text-sky-200",
+    avatar: "郭",
+    avatarBg: "bg-[radial-gradient(circle_at_34%_28%,#fff7ed_0%,#f97316_28%,#1d4ed8_62%,#111827_100%)]",
+    star: "text-orange-400",
+  },
+  "4": {
+    gradient: "from-sky-500 to-cyan-300",
+    ring: "border-sky-300/70",
+    text: "text-blue-200",
+    avatar: "王",
+    avatarBg: "bg-[radial-gradient(circle_at_36%_25%,#f0f9ff_0%,#60a5fa_28%,#7c3aed_64%,#111827_100%)]",
+    star: "text-sky-300",
+  },
 };
 
 const initPlayerStats = (): Record<string, PlayerStats> =>
@@ -221,53 +256,68 @@ function DiceGamePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#060b16] text-white">
-      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_18%_0%,rgba(14,165,233,0.22),transparent_28%),radial-gradient(circle_at_90%_12%,rgba(245,158,11,0.16),transparent_30%),linear-gradient(135deg,#060b16,#0c1426_52%,#07111d)]" />
-      <div className="fixed inset-0 -z-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:36px_36px]" />
+    <main className="relative min-h-screen overflow-x-hidden bg-[#020617] text-white">
+      <div className="fixed inset-0 -z-20 bg-[#020617]" />
+      <div className="fixed inset-0 -z-10 bg-[url('/assets/dice/neon-dice-bg.svg')] bg-cover bg-center" />
+      <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_50%_12%,rgba(14,165,233,0.15),transparent_30%),linear-gradient(180deg,rgba(2,6,23,0.08),rgba(2,6,23,0.18)_42%,rgba(2,6,23,0.72))]" />
 
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <header className="mb-5 flex flex-col gap-4 rounded-lg border border-white/10 bg-white/[0.05] p-4 backdrop-blur md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-4">
-            <a href="/" className="rounded-lg border border-white/10 bg-white/[0.06] p-2 text-slate-300 transition hover:bg-white/10 hover:text-white">
-              <ArrowLeft className="h-5 w-5" />
-            </a>
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_0_30px_rgba(34,211,238,0.35)]">
-              <Dice5 className="h-7 w-7" />
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Lucky Guy</p>
-              <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">内部骰子游戏</h1>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-sm sm:flex sm:items-center">
-            <Metric icon={Trophy} label="累计轮次" value={`${totalRounds}`} />
-            <Metric icon={Users} label="剩余玩家" value={`${activePlayers.length}`} />
-          </div>
+      <div className="mx-auto max-w-[1280px] px-4 py-5 sm:px-6 lg:px-8">
+        <header className="relative mb-4 flex min-h-20 items-center justify-center">
+          <a
+            href="/"
+            className="absolute left-0 top-1/2 -translate-y-1/2 rounded-lg border border-white/15 bg-black/35 p-2 text-slate-300 shadow-[0_0_20px_rgba(34,211,238,0.12)] backdrop-blur transition hover:border-cyan-200/50 hover:bg-cyan-400/10 hover:text-white"
+            aria-label="返回应用入口"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </a>
+          <img
+            src="/assets/dice/lucky-guy-logo.svg"
+            alt="Lucky Guy"
+            className="h-auto w-56 drop-shadow-[0_0_28px_rgba(34,211,238,0.55)] sm:w-72 md:w-80"
+          />
         </header>
 
-        <section className="mb-5 rounded-lg border border-cyan-200/15 bg-white/[0.06] p-4 shadow-[0_24px_90px_rgba(8,47,73,0.2)] backdrop-blur">
+        <section className="mb-7 rounded-lg border border-cyan-200/20 bg-[#020a14]/88 px-5 py-3 shadow-[0_20px_80px_rgba(2,6,23,0.5),0_0_38px_rgba(34,211,238,0.08)] backdrop-blur-xl">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <div className="mb-2 flex items-center gap-2 text-sm text-cyan-100">
-                <Sparkles className="h-4 w-4 text-cyan-300" />
-                {gameState.rewardAmount !== null ? `本轮奖励：¥${gameState.rewardAmount}` : "赛前准备"}
-              </div>
-              <p className="text-lg font-medium text-white">{gameState.message}</p>
+            <div className="flex flex-wrap items-center gap-5">
+              <InlineMetric icon={Trophy} label="累计" value={totalRounds} suffix="轮" />
+              <InlineMetric icon={Users} label="剩余" value={activePlayers.length} suffix="人" />
             </div>
-            <div className="flex flex-wrap gap-2">
+
+            <div className="min-w-0 flex-1 text-center lg:px-8">
+              <p className="truncate text-sm text-slate-300">
+                {gameState.rewardAmount !== null ? (
+                  <span className="font-semibold text-emerald-300">本轮奖励：¥{gameState.rewardAmount}</span>
+                ) : (
+                  <span>{gameState.message}</span>
+                )}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-2">
               {gameState.phase === "input-reward" && (
-                <Button onClick={() => setShowRewardDialog(true)} className="rounded-lg bg-cyan-500 text-white hover:bg-cyan-400">
+                <Button
+                  onClick={() => setShowRewardDialog(true)}
+                  className="rounded-full bg-gradient-to-r from-blue-500 to-violet-500 px-5 text-white shadow-[0_0_22px_rgba(99,102,241,0.35)] hover:from-blue-400 hover:to-fuchsia-400"
+                >
                   <Play className="mr-2 h-4 w-4" />
                   开始本轮
                 </Button>
               )}
               {gameState.phase === "result" && (
-                <Button onClick={handleNextRound} className="rounded-lg bg-blue-600 text-white hover:bg-blue-500">
+                <Button
+                  onClick={handleNextRound}
+                  className="rounded-full bg-gradient-to-r from-blue-500 to-violet-500 px-5 text-white shadow-[0_0_22px_rgba(99,102,241,0.35)] hover:from-blue-400 hover:to-fuchsia-400"
+                >
                   <Play className="mr-2 h-4 w-4" />
                   {gameState.winner ? "新游戏" : "下一轮"}
                 </Button>
               )}
-              <Button onClick={handleReset} variant="outline" className="rounded-lg border-white/20 bg-white/[0.04] text-white hover:bg-white/10">
+              <Button
+                onClick={handleReset}
+                variant="outline"
+                className="rounded-full border-white/20 bg-black/20 px-5 text-white hover:bg-white/10"
+              >
                 <RefreshCw className="mr-2 h-4 w-4" />
                 重新开始
               </Button>
@@ -281,7 +331,7 @@ function DiceGamePage() {
               initial={{ opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.94 }}
-              className="mb-5 rounded-lg border border-yellow-300/30 bg-yellow-300/10 p-5 text-center shadow-[0_0_60px_rgba(250,204,21,0.14)]"
+              className="mb-6 rounded-lg border border-yellow-300/30 bg-[#050913]/90 p-5 text-center shadow-[0_0_70px_rgba(250,204,21,0.22)] backdrop-blur"
             >
               <Trophy className="mx-auto mb-3 h-12 w-12 text-yellow-300" />
               <h2 className="text-2xl font-semibold text-yellow-100">恭喜 {gameState.winner.name} 获得胜利</h2>
@@ -292,7 +342,7 @@ function DiceGamePage() {
           )}
         </AnimatePresence>
 
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {sortedPlayers.map((player, index) => (
             <PlayerCard
               key={player.id}
@@ -305,7 +355,7 @@ function DiceGamePage() {
           ))}
         </section>
 
-        <section className="grid gap-5 py-5 lg:grid-cols-[0.9fr_1.1fr]">
+        <section className="grid gap-6 py-7">
           <StatsPanel playerStats={gameState.playerStats} />
           <HistoryPanel history={gameState.history} />
         </section>
@@ -432,36 +482,46 @@ function PlayerCard({
     <motion.article
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative overflow-hidden rounded-lg border bg-white/[0.055] p-5 backdrop-blur transition ${
-        inactive ? "border-white/10 opacity-45 grayscale" : `${skin.ring} shadow-[0_20px_80px_rgba(8,47,73,0.18)]`
-      } ${isWinner ? "scale-[1.02] border-yellow-300/70 shadow-[0_0_50px_rgba(250,204,21,0.18)]" : ""}`}
+      whileHover={!inactive ? { y: -3 } : undefined}
+      className={`relative min-h-[382px] overflow-hidden rounded-lg border bg-[#020a12]/95 p-5 backdrop-blur-xl transition ${
+        inactive ? "border-white/10 opacity-45 grayscale" : `${skin.ring} shadow-[0_24px_90px_rgba(2,6,23,0.55)]`
+      } ${isWinner ? "scale-[1.015] border-yellow-300/70 shadow-[0_0_70px_rgba(250,204,21,0.24)]" : ""}`}
     >
-      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${skin.gradient}`} />
+      <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/50 to-transparent`} />
+      <div className={`absolute -inset-x-8 -top-16 h-32 bg-gradient-to-b ${skin.gradient} opacity-10 blur-3xl`} />
       <div className="mb-4 flex items-start justify-between">
-        <span className={`rounded-md bg-gradient-to-r ${skin.gradient} px-2.5 py-1 text-xs font-bold text-white`}>
+        <span className={`rounded-md bg-gradient-to-r ${skin.gradient} px-3 py-1.5 text-xs font-black text-white shadow-[0_0_18px_rgba(168,85,247,0.35)]`}>
           #{rank}
         </span>
         {isWinner && <Trophy className="h-5 w-5 text-yellow-300" />}
       </div>
 
       <div className="flex flex-col items-center text-center">
-        <div className={`mb-3 flex h-24 w-24 items-center justify-center rounded-full border-2 ${skin.ring} bg-gradient-to-br ${skin.gradient} text-4xl font-black text-white shadow-[0_0_28px_rgba(34,211,238,0.25)]`}>
-          {skin.avatar}
+        <div className={`relative mb-4 flex h-24 w-24 items-center justify-center rounded-full border-2 ${skin.ring} bg-black shadow-[0_0_38px_rgba(34,211,238,0.25)]`}>
+          <div className={`absolute inset-1 rounded-full ${skin.avatarBg}`} />
+          <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${skin.gradient} opacity-25 blur-md`} />
+          <div className="absolute inset-[9px] rounded-full border border-white/35" />
+          <span className="relative text-3xl font-black tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            {skin.avatar}
+          </span>
         </div>
-        <h3 className="text-lg font-semibold text-white">{player.name}</h3>
-        <p className={`mt-1 text-xs ${skin.text}`}>{player.gender === "female" ? "Female Player" : "Male Player"}</p>
+        <h3 className="text-xl font-black text-white drop-shadow-[0_0_12px_rgba(255,255,255,0.12)]">{player.name}</h3>
+        <p className={`mt-2 text-base font-semibold ${skin.text}`}>{player.gender === "female" ? "♀" : "♂"}</p>
       </div>
 
-      <div className="mt-5 flex min-h-20 items-center justify-center">
+      <div className="mt-7 flex min-h-20 items-center justify-center">
         {canRoll ? (
-          <Button onClick={onRoll} className="rounded-lg bg-cyan-500 text-white hover:bg-cyan-400">
+          <Button
+            onClick={onRoll}
+            className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 px-5 font-bold text-white shadow-[0_0_24px_rgba(34,211,238,0.35)] hover:from-cyan-400 hover:to-blue-400"
+          >
             <Dice5 className="mr-2 h-4 w-4" />
             投骰子
           </Button>
         ) : player.hasRolled ? (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <DiceFace value={player.dice1} />
-            <span className="text-slate-400">+</span>
+            <span className="text-lg font-bold text-slate-500">+</span>
             <DiceFace value={player.dice2} />
           </div>
         ) : (
@@ -469,11 +529,13 @@ function PlayerCard({
         )}
       </div>
 
-      <div className="mt-4 rounded-lg border border-white/10 bg-black/20 p-3 text-center">
+      <div className="mt-6 text-center">
         <p className="text-xs text-slate-500">总分</p>
-        <p className="mt-1 text-3xl font-semibold text-cyan-100">{player.total}</p>
-        {player.prizeMoney > 0 && <p className="mt-2 text-xs font-semibold text-emerald-300">累计奖金 ¥{player.prizeMoney}</p>}
+        <p className="text-5xl font-black leading-none text-cyan-300 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">{player.total}</p>
+        {player.prizeMoney > 0 && <p className="mt-2 text-sm font-black text-emerald-300 drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]">¥{player.prizeMoney}</p>}
       </div>
+
+      <Sparkles className={`absolute bottom-5 left-5 h-4 w-4 ${skin.star} drop-shadow-[0_0_12px_currentColor]`} />
 
       {inactive && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-sm">
@@ -497,9 +559,9 @@ function DiceFace({ value }: { value: number }) {
   };
 
   return (
-    <div className="grid h-14 w-14 grid-cols-3 grid-rows-3 gap-1 rounded-lg border border-cyan-200/25 bg-slate-950 p-2 shadow-[0_0_22px_rgba(34,211,238,0.16)]">
+    <div className="grid h-14 w-14 rotate-[-2deg] grid-cols-3 grid-rows-3 gap-1 rounded-md border border-violet-300/60 bg-gradient-to-br from-white to-slate-200 p-2 shadow-[0_0_18px_rgba(168,85,247,0.72),inset_0_0_12px_rgba(59,130,246,0.35)]">
       {positions[value].map((position) => (
-        <span key={position} className={`${position} h-2.5 w-2.5 self-center justify-self-center rounded-full bg-cyan-200 shadow-[0_0_10px_rgba(165,243,252,0.8)]`} />
+        <span key={position} className={`${position} h-2.5 w-2.5 self-center justify-self-center rounded-full bg-slate-950 shadow-[0_0_7px_rgba(15,23,42,0.55)]`} />
       ))}
     </div>
   );
@@ -570,7 +632,7 @@ function RewardDialog({ onConfirm, onCancel }: { onConfirm: (amount: number | nu
 }
 
 function StatsPanel({ playerStats }: { playerStats: Record<string, PlayerStats> }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const stats = Object.values(playerStats).sort((a, b) => b.totalPrizeMoney - a.totalPrizeMoney);
 
   return (
@@ -602,7 +664,7 @@ function StatsPanel({ playerStats }: { playerStats: Record<string, PlayerStats> 
 }
 
 function HistoryPanel({ history }: { history: RoundRecord[] }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <Panel
@@ -641,12 +703,14 @@ function HistoryPanel({ history }: { history: RoundRecord[] }) {
 
 function RulesPanel() {
   return (
-    <section className="mb-8 rounded-lg border border-white/10 bg-white/[0.04] p-5 backdrop-blur">
+    <section className="mb-8 overflow-hidden rounded-lg border border-cyan-200/15 bg-[#020a12]/92 backdrop-blur-xl">
       <div className="mb-3 flex items-center gap-2 text-purple-100">
-        <FileText className="h-5 w-5" />
-        <h2 className="font-semibold">游戏规则</h2>
+        <div className="flex w-full items-center gap-2 border-b border-white/10 px-5 py-4">
+          <FileText className="h-5 w-5 text-purple-300" />
+          <h2 className="font-semibold">游戏规则</h2>
+        </div>
       </div>
-      <div className="grid gap-2 text-sm text-slate-400 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-2 px-5 pb-5 text-sm text-slate-400 sm:grid-cols-2 lg:grid-cols-5">
         <p>输入本轮奖励金额。</p>
         <p>每位玩家依次投两颗骰子。</p>
         <p>最后一人投完后自动公布结果。</p>
@@ -673,8 +737,8 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <section className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.045] backdrop-blur">
-      <button onClick={onToggle} className="flex w-full items-center justify-between border-b border-white/10 px-4 py-3 text-left">
+    <section className="overflow-hidden rounded-lg border border-cyan-200/15 bg-[#020a12]/92 shadow-[0_18px_70px_rgba(2,6,23,0.42)] backdrop-blur-xl">
+      <button onClick={onToggle} className="flex w-full items-center justify-between px-5 py-4 text-left transition hover:bg-white/[0.035]">
         <span className="flex items-center gap-2 font-semibold text-white">
           <Icon className={`h-5 w-5 ${accent}`} />
           {title}
@@ -689,7 +753,7 @@ function Panel({
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="p-4">{children}</div>
+            <div className="border-t border-white/10 p-4">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -697,14 +761,23 @@ function Panel({
   );
 }
 
-function Metric({ icon: Icon, label, value }: { icon: typeof Trophy; label: string; value: string }) {
+function InlineMetric({
+  icon: Icon,
+  label,
+  value,
+  suffix,
+}: {
+  icon: typeof Trophy;
+  label: string;
+  value: number;
+  suffix: string;
+}) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.055] px-3 py-2">
-      <div className="flex items-center gap-2 text-slate-400">
-        <Icon className="h-4 w-4 text-cyan-200" />
-        <span className="text-xs">{label}</span>
-      </div>
-      <p className="mt-1 text-lg font-semibold text-white">{value}</p>
+    <div className="flex items-center gap-2 text-sm">
+      <Icon className="h-5 w-5 text-cyan-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.7)]" />
+      <span className="text-slate-400">{label}</span>
+      <span className="text-2xl font-black text-cyan-300 drop-shadow-[0_0_12px_rgba(34,211,238,0.55)]">{value}</span>
+      <span className="text-slate-400">{suffix}</span>
     </div>
   );
 }
