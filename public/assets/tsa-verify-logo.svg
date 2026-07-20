@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 90" role="img" aria-labelledby="title desc">
+  <title id="title">TSA Verify Mark</title>
+  <desc id="desc">Local demo verification mark for agreement witness pages.</desc>
+  <rect width="240" height="90" rx="12" fill="#ffffff"/>
+  <rect x="7" y="7" width="226" height="76" rx="9" fill="#f8fbff" stroke="#2563eb" stroke-width="2"/>
+  <circle cx="50" cy="45" r="24" fill="#1d4ed8"/>
+  <path d="m39 45 8 8 16-18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="86" y="39" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#0f172a">TSA VERIFIED</text>
+  <text x="86" y="62" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#475569">Trusted Timestamp Demo</text>
+</svg>

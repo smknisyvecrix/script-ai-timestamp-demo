@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1260" role="img" aria-labelledby="title desc">
+  <title id="title">可信时间戳认证证书</title>
+  <desc id="desc">Local demo certificate preview in Chinese.</desc>
+  <rect width="900" height="1260" fill="#f8fafc"/>
+  <rect x="70" y="70" width="760" height="1120" fill="#ffffff" stroke="#1d4ed8" stroke-width="8"/>
+  <rect x="96" y="96" width="708" height="1068" fill="none" stroke="#93c5fd" stroke-width="2"/>
+  <circle cx="450" cy="205" r="56" fill="#1d4ed8"/>
+  <path d="m423 205 18 19 39-45" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="450" y="315" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="46" font-weight="700" fill="#0f172a">可信时间戳认证证书</text>
+  <text x="450" y="370" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#475569">Trusted Timestamp Certificate</text>
+  <line x1="170" y1="430" x2="730" y2="430" stroke="#dbeafe" stroke-width="3"/>
+  <text x="170" y="505" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1e293b">证书编号</text>
+  <text x="340" y="505" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#334155">TSA-2026-001234</text>
+  <text x="170" y="585" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1e293b">作品名称</text>
+  <text x="340" y="585" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#334155">都市情感剧：遇见未来</text>
+  <text x="170" y="665" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1e293b">认证阶段</text>
+  <text x="340" y="665" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#334155">初稿阶段</text>
+  <text x="170" y="745" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1e293b">时间戳</text>
+  <text x="340" y="745" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#334155">2026-06-20 14:35:28.123</text>
+  <text x="170" y="825" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#1e293b">哈希摘要</text>
+  <text x="340" y="825" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#334155">SHA256:a3f8b2c9d1e4f7a6b5c8...</text>
+  <rect x="170" y="910" width="560" height="96" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="450" y="950" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#1d4ed8">本证书为产品 Demo 本地预览资源</text>
+  <text x="450" y="982" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#475569">正式接入时请替换为真实证书服务输出</text>
+  <text x="450" y="1110" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#1e293b">联合信任可信时间戳服务中心</text>
+</svg>
